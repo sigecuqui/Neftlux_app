@@ -1,0 +1,17 @@
+.hero {
+    background-image: url('../../../assets/img/actors.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 490px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    &__title {
+        margin: 30px;
+        font-size: 48px;
+        font-weight: 700;
+        color: #E5E5E5;
+    }
+}
