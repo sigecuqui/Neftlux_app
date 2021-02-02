@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
 import "./index.scss";
 
-function Button({ size = "medium", children, isTransperent, onClick }) {
+function Button({className, type = "button", size = "medium", children, isTransperent, onClick, to }) {
   const transperency = isTransperent ? "btn--transperent" : "";
+  const Component = to ? Link : "button";
   return (
-    <button onClick={onClick} className={`btn btn--${size} ${transperency}`}>
+    <Component type={type} onClick={onClick} className={`btn btn--${size} ${transperency} ${className}` } to={to}>
       {children}
-    </button>
+    </Component>
   );
 }
 

@@ -1,17 +1,20 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import "./index.scss";
 
 import Layout from "./components/Layout";
-import Hero from "./components/Hero";
-import Divider from "./components/Divider";
-import Card from "./components/Card";
-import Button from "./components/Button";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Content from "./pages/Content";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: [],
       favorites: [],
     };
   }
@@ -27,48 +30,30 @@ class App extends React.Component {
     }
   };
 
-  componentDidMount() {
-    fetch("https://academy-video-api.herokuapp.com/content/free-items")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        this.setState({ movies: data });
-      });
-  }
-
   render() {
-    console.log(this.state.favorites);
-    const { movies, favorites } = this.state;
+    const { favorites } = this.state;
     return (
-      <Layout>
-        <Hero />
-        <Divider />
-        <article className="content">
-          <section className="content__wrapper">
-            <div className="content__movies">
-              {movies.map((movie) => {
-                if (movies.length < 0) {
-                  return <p>Loading...</p>;
-                }
-
-                return (
-                  <Card
-                    key={movie.id}
-                    image={movie.image}
-                    title={movie.title}
-                    description={movie.description}
-                    id={movie.id}
-                    toggleFavorite={this.toggleFavorite}
-                    favorites={favorites}
-                  />
-                );
-              })}
-            </div>
-            <Button size="large">Get More Content</Button>
-          </section>
-        </article>
-      </Layout>
+      <Router>
+        <Layout>
+          <Switch>
+            <PublicRoute exact path="/">
+              <Home
+                favorites={favorites}
+                toggleFavorite={this.toggleFavorite}
+              />
+            </PublicRoute>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute exact path="/movies">
+              <Content
+                favorites={favorites}
+                toggleFavorite={this.toggleFavorite}
+              />
+            </PrivateRoute>
+          </Switch>
+        </Layout>
+      </Router>
     );
   }
 }
