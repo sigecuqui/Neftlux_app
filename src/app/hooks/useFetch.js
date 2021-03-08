@@ -1,7 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+const noop = () => {};
 
-function useFetch(url, fetchOptions) {
+function useFetch({
+  onStart = noop,
+  onSuccess = noop,
+  onFailure = noop,
+  url,
+  fetchOptions,
+  condition = true,
+}) {
   const [payload, setPayload] = useState();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -11,6 +19,7 @@ function useFetch(url, fetchOptions) {
     console.log("willFetch");
     try {
       setLoading(true);
+      onStart();
 
       const response = await fetch(url, fetchOptions);
       const json = await response.json();
@@ -18,9 +27,9 @@ function useFetch(url, fetchOptions) {
       if (!response.ok) {
         const error =
           {
-            404: "The thing you're looking for is not there 🤷‍♂️",
-            400: "Failure: please check the login details",
-          }[response.status] || "Something went wrong! 😭";
+            404: "There is no result for this search",
+            400: "Error: please check the login credentials",
+          }[response.status] || "Something went wrong!";
 
         throw new Error(
           JSON.stringify({ message: error, status: response.status })
@@ -29,10 +38,13 @@ function useFetch(url, fetchOptions) {
 
       setPayload(json);
       setLoading(false);
+      onSuccess(json);
     } catch (e) {
       const { message, status } = JSON.parse(e.message);
       console.log(message);
       console.log(status);
+      onFailure(e.message);
+
       setError(message);
       setLoading(false);
 
@@ -41,11 +53,13 @@ function useFetch(url, fetchOptions) {
         history.replace("/login");
       }
     }
-  }, [url, fetchOptions, history]);
+  }, [onStart, onSuccess, onFailure, url, fetchOptions, history]);
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    if (condition) {
+      getData();
+    }
+  }, [getData, condition]);
 
   return { payload, error, loading };
 }

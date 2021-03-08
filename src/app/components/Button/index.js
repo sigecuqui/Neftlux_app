@@ -9,11 +9,13 @@ function Button({
   size = "medium",
   children,
   isTransperent,
+  alignLeft,
   onClick,
   to,
 }) {
   const classNames = cx("btn", `btn--${size}`, className, {
     "btn--transperent": isTransperent,
+    "btn--left": alignLeft
   });
 
   const Component = to ? Link : "button";

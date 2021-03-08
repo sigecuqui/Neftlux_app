@@ -1,9 +1,11 @@
 import { Switch, Route, Link } from "react-router-dom";
+import { connect } from "react-redux";
+
 import "./index.scss";
 import logo from "../../../assets/img/F.svg";
 import Button from "../Button";
 
-function Header() {
+function Header({ onLogout }) {
   return (
     <header className="header">
       <nav className="nav">
@@ -21,8 +23,13 @@ function Header() {
               Sign In
             </Button>
           </Route>
+          <Route path="/sign-up">
+            <Button to="/login" size="large">
+              Sign In
+            </Button>
+          </Route>
           <Route path="*">
-            <Button to="/" size="large" onClick={() => localStorage.clear()}>
+            <Button to="/" size="large" onClick={onLogout}>
               Logout
             </Button>
           </Route>
@@ -32,4 +39,12 @@ function Header() {
   );
 }
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+  return {
+    onLogout: () => {
+      dispatch({ type: "LOGOUT" });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Header);

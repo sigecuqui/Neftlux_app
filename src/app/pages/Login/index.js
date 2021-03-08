@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
 
 import "./index.scss";
 import { Input, Button } from "../../components";
 
-function Login() {
+function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
   const [error, setError] = useState("");
+
+  const history = useHistory();
+  const { state } = useLocation();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -25,13 +28,12 @@ function Login() {
         throw Error(res.status);
       })
       .then((data) => {
-        console.log(data);
-        localStorage.setItem("token", data.token);
-        history.replace("/movies");
+        onLogin(data.token);
+        history.replace(state?.initialRoute || "/movies");
       })
       .catch((e) => {
         console.log(e);
-        setError("Failure: please check the login details");
+        setError("Error: please check the login credentials");
       });
   };
 
@@ -68,4 +70,12 @@ function Login() {
   );
 }
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+  return {
+    onLogin: (token) => {
+      dispatch({ type: "LOGIN_SUCCESS", payload: token });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Login);

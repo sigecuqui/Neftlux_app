@@ -1,11 +1,27 @@
-import useFetch from "../../hooks/useFetch";
+import { connect } from "react-redux";
 
+import { bindActionCreators } from "redux";
+
+import content from "../../../content";
+
+import useFetch from "../../hooks/useFetch";
 import { Hero, Divider, Card, Button } from "../../components";
 
-function Home({ favorites, toggleFavorite }) {
-  const { loading, payload: movies = [] } = useFetch(
-    "https://academy-video-api.herokuapp.com/content/free-items"
-  );
+function Home({
+  loading,
+  movies,
+  onSuccess,
+  onFailure,
+  onStart,
+  favorites,
+  toggleFavorite,
+}) {
+  useFetch({
+    url: "https://academy-video-api.herokuapp.com/content/free-items",
+    onSuccess,
+    onFailure,
+    onStart,
+  });
 
   return (
     <>
@@ -29,11 +45,32 @@ function Home({ favorites, toggleFavorite }) {
               );
             })}
           </div>
-          <Button size="large">Get More Content</Button>
+          <Button to="/sign-up/create-user" size="large">
+            Get More Content
+          </Button>
         </section>
       </article>
     </>
   );
 }
 
-export default Home;
+const enhance = connect(
+  (state) => ({
+    movies: content.selectors.getMovies(state),
+    favorites: content.selectors.getFavorites(state),
+    loading: content.selectors.isLoading(state),
+    token: state.auth.token,
+  }),
+  (dispatch) =>
+    bindActionCreators(
+      {
+        onStart: content.actions.getMovies,
+        onSuccess: content.actions.getMoviesSuccess,
+        onFailure: content.actions.getMoviesFailure,
+        toggleFavorite: content.actions.toggleFavorite,
+      },
+      dispatch
+    )
+);
+
+export default enhance(Home);

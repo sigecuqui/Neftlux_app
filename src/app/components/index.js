@@ -7,3 +7,4 @@ export {default as Input} from "./Input";
 export {default as Modal} from "./Modal";
 export {default as PrivateRoute} from "./PrivateRoute";
 export {default as PublicRoute} from "./PublicRoute";
+export {default as ScrollToTop} from "./ScrollToTop";

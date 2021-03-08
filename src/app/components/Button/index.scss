@@ -23,4 +23,8 @@
   &--transperent {
     background-color: transparent;
   }
+
+  &--left {
+    align-self: flex-end;
+  }
 }
