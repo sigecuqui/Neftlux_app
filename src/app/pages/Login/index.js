@@ -1,25 +1,16 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import "./index.scss";
+import { Input, Button } from "../../components";
 
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const history = useHistory();
+  const [error, setError] = useState("");
 
-class Login extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      password: "",
-      username: "",
-      error: "",
-    };
-  }
-
-  onSubmit = (e) => {
-    const { password, username } = this.state;
-    const { history } = this.props;
-
+  const onSubmit = (e) => {
     e.preventDefault();
 
     fetch("https://academy-video-api.herokuapp.com/auth/login ", {
@@ -40,48 +31,41 @@ class Login extends React.Component {
       })
       .catch((e) => {
         console.log(e);
-        this.setState({ error: "Failure: please check the login details" });
+        setError("Failure: please check the login details");
       });
   };
 
-  handleChange = (e, field) => {
-    this.setState({ [field]: e.target.value });
-  };
-
-  render() {
-    const { error } = this.state;
-    return (
-      <div className="content">
-        <section className="content__wrapper">
-          <form onSubmit={this.onSubmit} className="form">
-            <p className="form__label">Username</p>
-            <Input
-              className="form__input"
-              type="text"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={(e) => this.handleChange(e, "username")}
-            />
-            <p className="form__label">Password</p>
-            <Input
-              className="form__input"
-              type="password"
-              placeholder="Password"
-              onChange={(e) => this.handleChange(e, "password")}
-            />
-            {error && <p className="form__error">{error}</p>}
-            <Button
-              type="submit"
-              size="large"
-              className={error ? "" : "form__submit--space"}
-            >
-              Sign In
-            </Button>
-          </form>
-        </section>
-      </div>
-    );
-  }
+  return (
+    <div className="content">
+      <section className="content__wrapper">
+        <form onSubmit={onSubmit} className="form">
+          <p className="form__label">Username</p>
+          <Input
+            className="form__input"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <p className="form__label">Password</p>
+          <Input
+            className="form__input"
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {error && <p className="form__error">{error}</p>}
+          <Button
+            type="submit"
+            size="large"
+            className={error ? "" : "form__submit--space"}
+          >
+            Sign In
+          </Button>
+        </form>
+      </section>
+    </div>
+  );
 }
 
-export default withRouter(Login);
+export default Login;

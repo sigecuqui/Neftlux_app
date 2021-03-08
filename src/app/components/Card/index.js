@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import "./index.scss";
 
 import Button from "../Button";
@@ -9,7 +10,7 @@ function Card({ image, title, description, toggleFavorite, favorites, id }) {
         <img className="card__img" src={image} alt={title}></img>
       </div>
       <div className="card__content">
-        <h4 className="card__title">{title}</h4>
+        <Link to={`/movies/${id}`}><h4 className="card__title">{title}</h4></Link>
         <p className="card__dscrip">{description}</p>
         <Button
           onClick={() => {

@@ -7,11 +7,11 @@
 
   &__img {
     width: 100%;
+    height: 100%;
   }
 
   &__container {
-    height: 300px;
-    overflow: hidden;
+    height: 420px;
   }
 
   &__content {
@@ -37,8 +37,3 @@
     margin-bottom: 10px;
   }
 }
-
-// .card:nth-child(3n) {
-//   margin-right: 0;
-//   margin-bottom: 50px;
-// }

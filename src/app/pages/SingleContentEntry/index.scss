@@ -1,0 +1,18 @@
+.movie {
+    display: flex;
+
+    &__image {
+        width: 316px;
+        margin-right: 25px;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    &__descrip {
+        margin-bottom: 10px;
+    }
+}
