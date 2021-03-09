@@ -1,0 +1,25 @@
+.content {
+    &__list {
+      border-radius: 4px 4px 0 0;
+      width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #e50914;
+  
+      &__item {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #e50914;
+  
+        &-text {
+          display: inline-block;
+          width: 100%;
+          padding: 10px 0;
+        }
+      }
+    }
+    
+    &__list:last-child() {
+      border-right: none;
+    }
+  }

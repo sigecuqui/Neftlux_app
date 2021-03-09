@@ -1,2 +1,3 @@
-export {default as CreateUser} from "./createUser";
-export {default as PickPlan} from "./pickPlan";
+export {default as CreateUser} from "./CreateUser";
+export {default as PickPlan} from "./PickPlan";
+export {default as Payment} from "./Payment";
