@@ -5,6 +5,8 @@ import "./index.scss";
 import logo from "../../../assets/img/F.svg";
 import Button from "../Button";
 
+import { Theme } from "../../contexts";
+
 function Header({ onLogout }) {
   return (
     <header className="header">
@@ -14,6 +16,7 @@ function Header({ onLogout }) {
           <img className="nav__img" src={logo} alt="logo-felix" />
           <img className="nav__img" src={logo} alt="logo-felix" />
         </Link>
+          <Theme.Select />
         <Switch>
           <Route exact path="/login">
             {null}
