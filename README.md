@@ -1,4 +1,4 @@
 This project was created with create-react-app.
 
-Netflix clone app with Signup, Login options; Router; Redux, etc.
+Minified clone of Netflix with React.js. CodeAcademy course task.
 
